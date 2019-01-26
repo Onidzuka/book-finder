@@ -54,5 +54,18 @@ describe('App', () => {
                 expect(wrapper.state().books).toEqual(books)
             })
         });
+
+        describe('when no results given from API', () => {
+            it('sets books to empty array', () => {
+                wrapper.setState({books});
+
+                let invocationArguments = Client.get.mock.calls[0];
+                let callback = invocationArguments[1];
+
+                callback({});
+
+                expect(wrapper.state().books).toEqual([])
+            })
+        });
     })
 });

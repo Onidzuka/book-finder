@@ -27,6 +27,8 @@ class App extends Component {
         Client.get(booksEndpoint, (response) => {
             if (response.items) {
                 this.setState({books: response.items})
+            } else {
+                this.setState({books: []})
             }
         })
     };
