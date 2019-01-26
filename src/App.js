@@ -26,7 +26,15 @@ class App extends Component {
 
         Client.get(booksEndpoint, (response) => {
             if (response.items) {
-                this.setState({books: response.items})
+                let books = response.items.map((book) => {
+                    let {id, volumeInfo} = book;
+
+                    let {authors = [], title = '', publisher = '', infoLink = '', imageLinks = {smallThumbnail: '/images/placeholder.png'}} = volumeInfo;
+
+                    return {id, authors, title, publisher, infoLink, imageLinks}
+                });
+
+                this.setState({books})
             } else {
                 this.setState({books: []})
             }

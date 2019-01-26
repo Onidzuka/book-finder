@@ -31,6 +31,9 @@ describe('App', () => {
                     infoLink: "test",
                     imageLinks: {smallThumbnail: "test"}
                 }
+            }, {
+                id: '2',
+                volumeInfo: {}
             }];
 
             wrapper.find('SearchInput').props().onQueryChange({target: {value: 'test'}});
@@ -46,17 +49,33 @@ describe('App', () => {
 
         describe('when API returns data', () => {
             it('displays books', () => {
+                let expected_result = [{
+                    id: '1',
+                    authors: ['Charles Dickens'],
+                    title: 'Lord of The Rings',
+                    publisher: 'Wallflower Press',
+                    infoLink: "test",
+                    imageLinks: {smallThumbnail: "test"}
+                }, {
+                    id: '2',
+                    authors: [],
+                    title: '',
+                    publisher: '',
+                    infoLink: "",
+                    imageLinks: {smallThumbnail: "/images/placeholder.png"}
+                }];
+
                 let invocationArguments = Client.get.mock.calls[0];
                 let callback = invocationArguments[1];
 
                 callback({items: books});
 
-                expect(wrapper.state().books).toEqual(books)
+                expect(wrapper.state().books).toEqual(expected_result)
             })
         });
 
         describe('when no results given from API', () => {
-            it('sets books to empty array', () => {
+            it('sets resets books', () => {
                 wrapper.setState({books});
 
                 let invocationArguments = Client.get.mock.calls[0];
