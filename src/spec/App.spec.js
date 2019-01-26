@@ -49,7 +49,7 @@ describe('App', () => {
                 let invocationArguments = Client.get.mock.calls[0];
                 let callback = invocationArguments[1];
 
-                callback(books);
+                callback({items: books});
 
                 expect(wrapper.state().books).toEqual(books)
             })
