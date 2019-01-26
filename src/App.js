@@ -26,19 +26,29 @@ class App extends Component {
 
         Client.get(booksEndpoint, (response) => {
             if (response.items) {
-                let books = response.items.map((book) => {
-                    let {id, volumeInfo} = book;
-
-                    let {authors = [], title = '', publisher = '', infoLink = '', imageLinks = {smallThumbnail: '/images/placeholder.png'}} = volumeInfo;
-
-                    return {id, authors, title, publisher, infoLink, imageLinks}
-                });
+                let books = this._processResponse(response.items);
 
                 this.setState({books})
             } else {
                 this.setState({books: []})
             }
         })
+    };
+
+    _processResponse = (items) => {
+        return items.map((item) => {
+            let {id, volumeInfo} = item;
+
+            let {
+                authors = [],
+                title = '',
+                publisher = '',
+                infoLink = '',
+                imageLinks = {smallThumbnail: '/images/placeholder.png'}
+            } = volumeInfo;
+
+            return {id, authors, title, publisher, infoLink, imageLinks}
+        });
     };
 
     _constructQuery() {
