@@ -22,7 +22,7 @@ class App extends Component {
     };
 
     handleSearchBooks = () => {
-        const booksEndpoint = API_ENDPOINT + `?q=${this.state.query}&key=${API_KEY}`;
+        const booksEndpoint = API_ENDPOINT + this._constructQuery();
 
         Client.get(booksEndpoint, (response) => {
             if (response.items) {
@@ -32,6 +32,10 @@ class App extends Component {
             }
         })
     };
+
+    _constructQuery() {
+        return `?q=${this.state.query}&key=${API_KEY}`;
+    }
 
     render() {
         return (
