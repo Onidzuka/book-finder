@@ -16,6 +16,8 @@ const Book = (props) => (
                     <h6 className="card-title">Author: <span className="font-weight-light">{props.book.authors}</span></h6>
                     <h6 className="card-title">Title: <span className="font-weight-light">{props.book.title}</span></h6>
                     <h6 className="card-title">Publisher: <span className="font-weight-light">{props.book.publisher}</span></h6>
+
+                    <a href={props.book.infoLink} target="_blank">Read more</a>
                 </div>
             </div>
         </div>
