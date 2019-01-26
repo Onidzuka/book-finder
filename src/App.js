@@ -26,7 +26,9 @@ class App extends Component {
         const booksEndpoint = API_ENDPOINT + `?q=${this.state.query}&key=${API_KEY}`;
 
         Client.get(booksEndpoint, (response) => {
-            this.setState({books: response.items})
+            if (response.items) {
+                this.setState({books: response.items})
+            }
         })
     };
 
