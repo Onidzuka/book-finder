@@ -4,6 +4,8 @@ import SearchInput from './SearchInput';
 import BooksList from './BooksList';
 import Client from './client/Client';
 
+import * as constants from "./constants/Constants"
+
 class App extends Component {
     state = {
         query: '',
@@ -16,24 +18,16 @@ class App extends Component {
     };
 
     handleSearchBooks = () => {
-        let validationErrors = this.validate();
+        let validationErrors = this._validate();
 
-        if (Object.keys((validationErrors)).length) {
+        if (Object.keys((this._validate())).length) {
             this.setState({validationErrors})
         } else {
-            Client.searchBooks(this.state.query, (response) => {
-                if (response.items) {
-                    let books = this._processResponse(response.items);
-
-                    this.setState({books, validationErrors})
-                } else {
-                    this.setState({books: [], validationErrors})
-                }
-            })
+            Client.searchBooks(this.state.query, this._loadBooks)
         }
     };
 
-    validate = () => {
+    _validate = () => {
         const errors = {};
 
         if (!this.state.query.length) {
@@ -43,7 +37,15 @@ class App extends Component {
         return errors
     };
 
-    _processResponse = (items) => {
+    _loadBooks = (response) => {
+        if (response.items) {
+            this.setState({books: this._extractBooks(response.items), validationErrors: {}})
+        } else {
+            this.setState({books: [], validationErrors: {}})
+        }
+    };
+
+    _extractBooks = (items) => {
         return items.map((item) => {
             let {id, volumeInfo} = item;
 
@@ -52,7 +54,7 @@ class App extends Component {
                 title = '',
                 publisher = '',
                 infoLink = '',
-                imageLinks = {smallThumbnail: '/images/placeholder.png'}
+                imageLinks = {smallThumbnail: constants.IMAGE_PLACEHOLDER}
             } = volumeInfo;
 
             return {id, authors, title, publisher, infoLink, imageLinks}
