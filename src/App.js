@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 
 import SearchInput from './SearchInput';
 import BooksList from './BooksList';
-
 import Client from './client/Client';
-import {
-    API_ENDPOINT,
-    API_KEY
-} from "./constants/Constants";
 
 class App extends Component {
     state = {
@@ -26,9 +21,7 @@ class App extends Component {
         if (Object.keys((validationErrors)).length) {
             this.setState({validationErrors})
         } else {
-            const booksEndpoint = API_ENDPOINT + this._constructQuery();
-
-            Client.searchBooks(booksEndpoint, (response) => {
+            Client.searchBooks(this.state.query, (response) => {
                 if (response.items) {
                     let books = this._processResponse(response.items);
 
@@ -65,10 +58,6 @@ class App extends Component {
             return {id, authors, title, publisher, infoLink, imageLinks}
         });
     };
-
-    _constructQuery() {
-        return `?q=${this.state.query}&key=${API_KEY}`;
-    }
 
     render() {
         return (

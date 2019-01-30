@@ -1,5 +1,10 @@
-function searchBooks(url, success) {
-    return fetch(url)
+import * as constants from "../constants/Constants"
+
+function searchBooks(query, success) {
+    let queryString = `volumes?q=${query}&key=${constants.API_KEY}`;
+    let booksEndpoint = constants.API_ENDPOINT + queryString;
+
+    return fetch(booksEndpoint)
         .then(checkStatus)
         .then(parseJSON)
         .then(success)

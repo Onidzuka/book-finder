@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 
 import App from '../App'
 import Client from "../client/Client";
-import * as constants from "../constants/Constants"
 
 jest.mock('../client/Client');
 
@@ -49,10 +48,9 @@ describe('App', () => {
         });
 
         it('sends get a request to external API', () => {
-            let expectedUrl = constants.API_ENDPOINT + '?q=test&key=' + constants.API_KEY;
             let invocationArguments = Client.searchBooks.mock.calls[0];
 
-            expect(invocationArguments[0]).toEqual(expectedUrl)
+            expect(invocationArguments[0]).toEqual('test')
         });
 
         describe('when API returns data', () => {
