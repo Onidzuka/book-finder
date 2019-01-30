@@ -1,4 +1,4 @@
-function get(url, success) {
+function searchBooks(url, success) {
     return fetch(url)
         .then(checkStatus)
         .then(parseJSON)
@@ -20,5 +20,5 @@ function parseJSON(response) {
     return response.json();
 }
 
-const Client = { get };
+const Client = { searchBooks };
 export default Client;

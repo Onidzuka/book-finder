@@ -28,7 +28,7 @@ class App extends Component {
         } else {
             const booksEndpoint = API_ENDPOINT + this._constructQuery();
 
-            Client.get(booksEndpoint, (response) => {
+            Client.searchBooks(booksEndpoint, (response) => {
                 if (response.items) {
                     let books = this._processResponse(response.items);
 

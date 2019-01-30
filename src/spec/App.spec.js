@@ -15,7 +15,7 @@ describe('App', () => {
     });
 
     afterEach(() => {
-        Client.get.mockClear();
+        Client.searchBooks.mockClear();
     });
 
     it('inits state', () => {
@@ -50,7 +50,7 @@ describe('App', () => {
 
         it('sends get a request to external API', () => {
             let expectedUrl = constants.API_ENDPOINT + '?q=test&key=' + constants.API_KEY;
-            let invocationArguments = Client.get.mock.calls[0];
+            let invocationArguments = Client.searchBooks.mock.calls[0];
 
             expect(invocationArguments[0]).toEqual(expectedUrl)
         });
@@ -73,7 +73,7 @@ describe('App', () => {
                     imageLinks: {smallThumbnail: "/images/placeholder.png"}
                 }];
 
-                let invocationArguments = Client.get.mock.calls[0];
+                let invocationArguments = Client.searchBooks.mock.calls[0];
                 let callback = invocationArguments[1];
 
                 callback({items: books});
@@ -86,7 +86,7 @@ describe('App', () => {
             it('sets resets books', () => {
                 wrapper.setState({books});
 
-                let invocationArguments = Client.get.mock.calls[0];
+                let invocationArguments = Client.searchBooks.mock.calls[0];
                 let callback = invocationArguments[1];
 
                 callback({});
@@ -107,7 +107,7 @@ describe('App', () => {
         });
 
         it('does not make API calls', () => {
-            expect(Client.get.mock.calls.length).toEqual(0)
+            expect(Client.searchBooks.mock.calls.length).toEqual(0)
         })
     });
 
@@ -120,7 +120,7 @@ describe('App', () => {
             wrapper.find('SearchInput').props().onQueryChange({target: {value: 'test'}});
             wrapper.find('SearchInput').props().onSearch();
 
-            let invocationArguments = Client.get.mock.calls[0];
+            let invocationArguments = Client.searchBooks.mock.calls[0];
             callback = invocationArguments[1];
         });
 
