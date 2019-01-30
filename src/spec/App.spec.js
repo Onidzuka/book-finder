@@ -21,7 +21,8 @@ describe('App', () => {
         expect(wrapper.state()).toEqual({
             query: '',
             books: [],
-            validationErrors: {}
+            validationErrors: {},
+            systemError: false
         })
     });
 
@@ -47,14 +48,14 @@ describe('App', () => {
             wrapper.find('SearchInput').props().onSearch();
         });
 
-        it('sends get a request to external API', () => {
+        it('sends a request to external API', () => {
             let invocationArguments = Client.searchBooks.mock.calls[0];
 
             expect(invocationArguments[0]).toEqual('test')
         });
 
         describe('when API returns data', () => {
-            it('displays books', () => {
+            it('sets state for `books`', () => {
                 let expected_result = [{
                     id: '1',
                     authors: ['Charles Dickens'],
@@ -77,11 +78,22 @@ describe('App', () => {
                 callback({data: {items: books}});
 
                 expect(wrapper.state().books).toEqual(expected_result)
+            });
+
+            it('resets state for `systemError`', () => {
+                wrapper.setState({systemError: true});
+
+                let invocationArguments = Client.searchBooks.mock.calls[0];
+                let callback = invocationArguments[1];
+
+                callback({data: {items: []}});
+
+                expect(wrapper.state().systemError).toEqual(false)
             })
         });
 
         describe('when no results given from API', () => {
-            it('resets books', () => {
+            it('resets state for `books`', () => {
                 wrapper.setState({books});
 
                 let invocationArguments = Client.searchBooks.mock.calls[0];
@@ -90,6 +102,27 @@ describe('App', () => {
                 callback({data: {}});
 
                 expect(wrapper.state().books).toEqual([])
+            });
+
+            it('resets state for `systemError`', () => {
+                wrapper.setState({systemError: true});
+
+                let invocationArguments = Client.searchBooks.mock.calls[0];
+                let callback = invocationArguments[1];
+
+                callback({data: {items: []}});
+
+                expect(wrapper.state().systemError).toEqual(false)
+            })
+        });
+
+        describe('when API returns error', () => {
+            it('displays system error', () => {
+                let invocationArguments = Client.searchBooks.mock.calls[0];
+                let callback = invocationArguments[2];
+
+                callback();
+                expect(wrapper.find('SystemError').dive().find('.card-text').text()).toEqual('Something went wrong.')
             })
         });
     });

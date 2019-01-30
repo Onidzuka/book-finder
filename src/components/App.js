@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import SearchInput from './SearchInput';
 import BooksList from './BooksList';
+import SystemError from './SystemError';
 import Client from '../client/Client';
 
 import * as constants from "../constants/Constants"
@@ -10,7 +11,8 @@ class App extends Component {
     state = {
         query: '',
         books: [],
-        validationErrors: {}
+        validationErrors: {},
+        systemError: false
     };
 
     handleQueryChange = (event) => {
@@ -23,7 +25,7 @@ class App extends Component {
         if (Object.keys((this._validate())).length) {
             this.setState({validationErrors})
         } else {
-            Client.searchBooks(this.state.query, this._loadBooks)
+            Client.searchBooks(this.state.query, this._loadBooks, this._systemError)
         }
     };
 
@@ -41,10 +43,14 @@ class App extends Component {
         let items = response.data.items;
 
         if (items) {
-            this.setState({books: this._extractBooks(items), validationErrors: {}})
+            this.setState({books: this._extractBooks(items), validationErrors: {}, systemError: false})
         } else {
             this.setState({books: [], validationErrors: {}})
         }
+    };
+
+    _systemError = () => {
+        this.setState({systemError: true});
     };
 
     _extractBooks = (items) => {
@@ -76,6 +82,9 @@ class App extends Component {
                         />
                         <BooksList
                             books={this.state.books}
+                        />
+                        <SystemError
+                            systemError={this.state.systemError}
                         />
                     </div>
                 </div>
