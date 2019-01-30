@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme';
 
-import App from '../App'
+import App from '../components/App'
 import Client from "../client/Client";
 
 jest.mock('../client/Client');

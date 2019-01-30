@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 
 import SearchInput from './SearchInput';
 import BooksList from './BooksList';
-import Client from './client/Client';
+import Client from '../client/Client';
 
-import * as constants from "./constants/Constants"
+import * as constants from "../constants/Constants"
 
 class App extends Component {
     state = {
