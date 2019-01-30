@@ -1,28 +1,20 @@
 import * as constants from "../constants/Constants"
 
+const axios = require('axios');
+
+const instance = axios.create({
+    baseURL: constants.API_ENDPOINT,
+    timeout: 1000
+});
+
 function searchBooks(query, success) {
-    let queryString = `volumes?q=${query}&key=${constants.API_KEY}`;
-    let booksEndpoint = constants.API_ENDPOINT + queryString;
+    let path = `/volumes?q=${query}&key=${constants.API_KEY}`;
 
-    return fetch(booksEndpoint)
-        .then(checkStatus)
-        .then(parseJSON)
+    instance.get(path)
         .then(success)
-}
-
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response;
-    } else {
-        const error = new Error(`HTTP Error ${response.statusText}`);
-        error.status = response.statusText;
-        error.response = response;
-        throw error;
-    }
-}
-
-function parseJSON(response) {
-    return response.json();
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 const Client = { searchBooks };

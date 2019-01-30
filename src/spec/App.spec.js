@@ -74,20 +74,20 @@ describe('App', () => {
                 let invocationArguments = Client.searchBooks.mock.calls[0];
                 let callback = invocationArguments[1];
 
-                callback({items: books});
+                callback({data: {items: books}});
 
                 expect(wrapper.state().books).toEqual(expected_result)
             })
         });
 
         describe('when no results given from API', () => {
-            it('sets resets books', () => {
+            it('resets books', () => {
                 wrapper.setState({books});
 
                 let invocationArguments = Client.searchBooks.mock.calls[0];
                 let callback = invocationArguments[1];
 
-                callback({});
+                callback({data: {}});
 
                 expect(wrapper.state().books).toEqual([])
             })
@@ -123,13 +123,13 @@ describe('App', () => {
         });
 
         it('hides error messages', () => {
-            callback({items: []});
+            callback({data: {items: []}});
 
             expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
         });
 
         it('hides error messages', () => {
-            callback({});
+            callback({data: {}});
 
             expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
         });

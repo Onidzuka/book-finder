@@ -38,8 +38,10 @@ class App extends Component {
     };
 
     _loadBooks = (response) => {
-        if (response.items) {
-            this.setState({books: this._extractBooks(response.items), validationErrors: {}})
+        let items = response.data.items;
+
+        if (items) {
+            this.setState({books: this._extractBooks(items), validationErrors: {}})
         } else {
             this.setState({books: [], validationErrors: {}})
         }
