@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 
-import SearchInput from './SearchInput'
-import BooksList from './BooksList'
+import SearchInput from './SearchInput';
+import BooksList from './BooksList';
 
-import Client from './client/Client'
+import Client from './client/Client';
 import {
     API_ENDPOINT,
     API_KEY
-}  from "./constants/Constants";
+} from "./constants/Constants";
 
 class App extends Component {
     state = {
         query: '',
-        books: []
+        books: [],
+        validationErrors: {}
     };
 
     handleQueryChange = (event) => {
@@ -20,17 +21,33 @@ class App extends Component {
     };
 
     handleSearchBooks = () => {
-        const booksEndpoint = API_ENDPOINT + this._constructQuery();
+        let validationErrors = this.validate();
 
-        Client.get(booksEndpoint, (response) => {
-            if (response.items) {
-                let books = this._processResponse(response.items);
+        if (Object.keys((validationErrors)).length) {
+            this.setState({validationErrors})
+        } else {
+            const booksEndpoint = API_ENDPOINT + this._constructQuery();
 
-                this.setState({books})
-            } else {
-                this.setState({books: []})
-            }
-        })
+            Client.get(booksEndpoint, (response) => {
+                if (response.items) {
+                    let books = this._processResponse(response.items);
+
+                    this.setState({books, validationErrors})
+                } else {
+                    this.setState({books: [], validationErrors})
+                }
+            })
+        }
+    };
+
+    validate = () => {
+        const errors = {};
+
+        if (!this.state.query.length) {
+            errors.query = 'Required';
+        }
+
+        return errors
     };
 
     _processResponse = (items) => {
@@ -62,6 +79,7 @@ class App extends Component {
                             query={this.state.query}
                             onQueryChange={this.handleQueryChange}
                             onSearch={this.handleSearchBooks}
+                            validationErrors={this.state.validationErrors}
                         />
                         <BooksList
                             books={this.state.books}

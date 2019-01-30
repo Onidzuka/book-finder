@@ -18,6 +18,14 @@ describe('App', () => {
         Client.get.mockClear();
     });
 
+    it('inits state', () => {
+        expect(wrapper.state()).toEqual({
+            query: '',
+            books: [],
+            validationErrors: {}
+        })
+    });
+
     describe('when user searches for books', () => {
         let books;
 
@@ -86,5 +94,46 @@ describe('App', () => {
                 expect(wrapper.state().books).toEqual([])
             })
         });
-    })
+    });
+
+    describe('when empty input given', () => {
+        beforeEach(() => {
+            wrapper.find('SearchInput').props().onQueryChange({target: {value: ''}});
+            wrapper.find('SearchInput').props().onSearch();
+        });
+
+        it('displays validation errors', () => {
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('Required')
+        });
+
+        it('does not make API calls', () => {
+            expect(Client.get.mock.calls.length).toEqual(0)
+        })
+    });
+
+    describe('when input value is present', () => {
+        let callback;
+
+        beforeEach(() => {
+            wrapper.setState({validationErrors: {query: 'test'}});
+
+            wrapper.find('SearchInput').props().onQueryChange({target: {value: 'test'}});
+            wrapper.find('SearchInput').props().onSearch();
+
+            let invocationArguments = Client.get.mock.calls[0];
+            callback = invocationArguments[1];
+        });
+
+        it('hides error messages', () => {
+            callback({items: []});
+
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
+        });
+
+        it('hides error messages', () => {
+            callback({});
+
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
+        });
+    });
 });
