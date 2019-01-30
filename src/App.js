@@ -9,8 +9,6 @@ import {
     API_KEY
 }  from "./constants/Constants";
 
-import './App.css';
-
 class App extends Component {
     state = {
         query: '',
