@@ -22,7 +22,7 @@ class App extends Component {
     handleSearchBooks = () => {
         let validationErrors = this._validate();
 
-        if (Object.keys((this._validate())).length) {
+        if (Object.keys(validationErrors).length) {
             this.setState({validationErrors})
         } else {
             Client.searchBooks(this.state.query, this._loadBooks, this._systemError)
