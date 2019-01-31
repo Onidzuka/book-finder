@@ -45,7 +45,7 @@ class App extends Component {
         if (items) {
             this.setState({books: this._extractBooks(items), validationErrors: {}, systemError: false})
         } else {
-            this.setState({books: [], validationErrors: {}})
+            this.setState({books: [], validationErrors: {}, systemError: false})
         }
     };
 

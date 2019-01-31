@@ -110,7 +110,7 @@ describe('App', () => {
                 let invocationArguments = Client.searchBooks.mock.calls[0];
                 let callback = invocationArguments[1];
 
-                callback({data: {items: []}});
+                callback({data: {}});
 
                 expect(wrapper.state().systemError).toEqual(false)
             })
