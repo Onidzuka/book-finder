@@ -5,7 +5,7 @@ import BooksList from './BooksList';
 import SystemError from './SystemError';
 import Client from '../client/Client';
 
-import * as constants from "../constants/Constants"
+import * as constants from "../constants/Constants";
 
 class App extends Component {
     state = {

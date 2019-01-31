@@ -1,10 +1,10 @@
 import React from 'react'
 import { shallow } from 'enzyme';
 
-import App from '../components/App'
-import Client from "../client/Client";
+import App from '../../components/App'
+import Client from "../../client/Client";
 
-jest.mock('../client/Client');
+jest.mock('../../client/Client');
 
 describe('App', () => {
     let wrapper;
