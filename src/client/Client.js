@@ -1,4 +1,4 @@
-import * as constants from "../constants/Constants"
+import * as constants from "../constants/Constants";
 
 const axios = require('axios');
 

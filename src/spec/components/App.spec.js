@@ -51,7 +51,7 @@ describe('App', () => {
         it('sends a request to external API', () => {
             let invocationArguments = Client.searchBooks.mock.calls[0];
 
-            expect(invocationArguments[0]).toEqual('test')
+            expect(invocationArguments[0]).toEqual('test');
         });
 
         describe('when API returns data', () => {
@@ -77,7 +77,7 @@ describe('App', () => {
 
                 callback({data: {items: books}});
 
-                expect(wrapper.state().books).toEqual(expected_result)
+                expect(wrapper.state().books).toEqual(expected_result);
             });
 
             it('resets state for `systemError`', () => {
@@ -88,7 +88,7 @@ describe('App', () => {
 
                 callback({data: {items: []}});
 
-                expect(wrapper.state().systemError).toEqual(false)
+                expect(wrapper.state().systemError).toEqual(false);
             })
         });
 
@@ -101,7 +101,7 @@ describe('App', () => {
 
                 callback({data: {}});
 
-                expect(wrapper.state().books).toEqual([])
+                expect(wrapper.state().books).toEqual([]);
             });
 
             it('resets state for `systemError`', () => {
@@ -112,7 +112,7 @@ describe('App', () => {
 
                 callback({data: {}});
 
-                expect(wrapper.state().systemError).toEqual(false)
+                expect(wrapper.state().systemError).toEqual(false);
             })
         });
 
@@ -122,7 +122,7 @@ describe('App', () => {
                 let callback = invocationArguments[2];
 
                 callback();
-                expect(wrapper.find('SystemError').dive().find('.card-text').text()).toEqual('Something went wrong.')
+                expect(wrapper.find('SystemError').dive().find('.card-text').text()).toEqual('Something went wrong.');
             })
         });
     });
@@ -134,11 +134,11 @@ describe('App', () => {
         });
 
         it('displays validation errors', () => {
-            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('Required')
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('Required');
         });
 
         it('does not make API calls', () => {
-            expect(Client.searchBooks.mock.calls.length).toEqual(0)
+            expect(Client.searchBooks.mock.calls.length).toEqual(0);
         })
     });
 
@@ -158,13 +158,13 @@ describe('App', () => {
         it('hides error messages', () => {
             callback({data: {items: []}});
 
-            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('');
         });
 
         it('hides error messages', () => {
             callback({data: {}});
 
-            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('')
+            expect(wrapper.find('SearchInput').dive().find('.error').text()).toEqual('');
         });
     });
 });
